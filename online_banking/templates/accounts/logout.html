@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0 text-center">
+                <div class="card-header bank-gradient text-white py-4">
+                    <h3 class="mb-0"><i class="fas fa-sign-out-alt me-2"></i>Logout Successful</h3>
+                </div>
+                <div class="card-body p-5">
+                    <!-- Success Icon -->
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle fa-5x text-success"></i>
+                    </div>
+                    
+                    <!-- Success Message -->
+                    <h4 class="text-success mb-3">You've been logged out successfully!</h4>
+                    <p class="text-muted mb-4">
+                        Thank you for using SecureBank. Your session has been securely terminated.
+                    </p>
+
+                    <!-- Security Information -->
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-shield-alt me-2"></i>Security Notice</h6>
+                        <small class="mb-0">
+                            For your security, we recommend that you close your browser if you're on a shared computer.
+                        </small>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-3 mt-4">
+                        <a href="{% url 'login' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login Again
+                        </a>
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-home me-2"></i>Return to Homepage
+                        </a>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="mt-4 pt-3 border-top">
+                        <h6 class="text-muted mb-3">Quick Access</h6>
+                        <div class="row g-2 text-center">
+                            <div class="col-4">
+                                <a href="{% url 'home' %}#features" class="text-decoration-none">
+                                    <div class="p-2 border rounded">
+                                        <i class="fas fa-info-circle text-primary mb-1"></i>
+                                        <small class="d-block">Features</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-4">
+                                <a href="{% url 'home' %}#contact" class="text-decoration-none">
+                                    <div class="p-2 border rounded">
+                                        <i class="fas fa-headset text-success mb-1"></i>
+                                        <small class="d-block">Support</small>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-4">
+                                <a href="{% url 'register' %}" class="text-decoration-none">
+                                    <div class="p-2 border rounded">
+                                        <i class="fas fa-user-plus text-warning mb-1"></i>
+                                        <small class="d-block">Register</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Security Tips -->
+            <div class="card mt-4 border-0 bg-light">
+                <div class="card-body text-center">
+                    <h6 class="mb-3"><i class="fas fa-lock me-2"></i>Security Tips</h6>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <i class="fas fa-key text-primary mb-2"></i>
+                            <p class="small mb-0">Use strong, unique passwords</p>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="fas fa-sync-alt text-warning mb-2"></i>
+                            <p class="small mb-0">Change passwords regularly</p>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="fas fa-shield-check text-success mb-2"></i>
+                            <p class="small mb-0">Enable two-factor authentication</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: transform 0.2s ease;
+}
+.card:hover {
+    transform: translateY(-2px);
+}
+.border:hover {
+    background-color: #f8f9fa;
+}
+</style>
+{% endblock %}

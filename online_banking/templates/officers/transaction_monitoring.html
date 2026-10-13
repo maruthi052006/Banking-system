@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            {% include 'officers/sidebar.html' %}
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Transaction Monitoring</h4>
+                    
+                    <!-- Filters -->
+                    <div class="d-flex gap-2">
+                        <form method="get" class="d-flex flex-wrap gap-2">
+                            <select name="status" class="form-select form-select-sm">
+                                <option value="">All Status</option>
+                                <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                                <option value="failed" {% if status_filter == 'failed' %}selected{% endif %}>Failed</option>
+                                <option value="review" {% if status_filter == 'review' %}selected{% endif %}>Under Review</option>
+                            </select>
+                            
+                            <select name="type" class="form-select form-select-sm">
+                                <option value="">All Types</option>
+                                <option value="deposit" {% if type_filter == 'deposit' %}selected{% endif %}>Deposit</option>
+                                <option value="withdrawal" {% if type_filter == 'withdrawal' %}selected{% endif %}>Withdrawal</option>
+                                <option value="transfer" {% if type_filter == 'transfer' %}selected{% endif %}>Transfer</option>
+                            </select>
+                            
+                            <input type="date" name="date_from" class="form-control form-control-sm" value="{{ date_from }}" placeholder="From">
+                            <input type="date" name="date_to" class="form-control form-control-sm" value="{{ date_to }}" placeholder="To">
+                            
+                            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                            <a href="{% url 'transaction_monitoring' %}" class="btn btn-outline-secondary btn-sm">Clear</a>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if transactions %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Account</th>
+                                        <th>Customer</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for transaction in transactions %}
+                                        <tr>
+                                            <td>{{ transaction.created_at|date:"M d, H:i" }}</td>
+                                            <td><small>{{ transaction.account.account_number }}</small></td>
+                                            <td>{{ transaction.account.user.get_full_name }}</td>
+                                            <td>
+                                                <span class="badge 
+                                                    {% if transaction.transaction_type == 'deposit' %}bg-success
+                                                    {% elif transaction.transaction_type == 'withdrawal' %}bg-danger
+                                                    {% else %}bg-primary{% endif %}">
+                                                    {{ transaction.get_transaction_type_display }}
+                                                </span>
+                                            </td>
+                                            <td><strong>${{ transaction.amount|floatformat:2|intcomma }}</strong></td>
+                                            <td>{{ transaction.description|truncatewords:5 }}</td>
+                                            <td>
+                                                <span class="badge 
+                                                    {% if transaction.status == 'completed' %}bg-success
+                                                    {% elif transaction.status == 'failed' %}bg-danger
+                                                    {% else %}bg-warning{% endif %}">
+                                                    {{ transaction.get_status_display }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% if transaction.status == 'review' or transaction.amount >= 5000 %}
+                                                    <a href="{% url 'review_transaction' transaction.transaction_id %}" class="btn btn-warning btn-sm">
+                                                        <i class="fas fa-search me-1"></i>Review
+                                                    </a>
+                                                {% else %}
+                                                    <span class="text-muted">Auto-approved</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-search fa-4x text-muted mb-3"></i>
+                            <h5 class="text-muted">No transactions found</h5>
+                            <p class="text-muted">No transactions match your current filters.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

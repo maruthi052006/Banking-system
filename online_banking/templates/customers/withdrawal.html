@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-danger text-white text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-minus-circle me-2"></i>Withdraw Funds</h3>
+                    <p class="mb-0 mt-2">Withdraw money from your account</p>
+                </div>
+                <div class="card-body p-5">
+                    <!-- Current Balance -->
+                    <div class="alert alert-info">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>Available Balance:</strong>
+                            <span class="h5 mb-0">${{ account.balance|floatformat:2 }}</span>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger btn-lg mt-3">
+                                <i class="fas fa-check-circle me-2"></i>Confirm Withdrawal
+                            </button>
+                            <a href="{% url 'customer_dashboard' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+
+                    <!-- Withdrawal Information -->
+                    <div class="alert alert-light mt-4">
+                        <h6><i class="fas fa-info-circle me-2 text-primary"></i>About Withdrawals:</h6>
+                        <ul class="mb-0 small">
+                            <li>Withdrawals are processed instantly</li>
+                            <li>Ensure sufficient balance before withdrawing</li>
+                            <li>Daily withdrawal limit: $5,000</li>
+                            <li>No fees for standard withdrawals</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

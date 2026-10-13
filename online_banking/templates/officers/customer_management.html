@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Customer Management</h2>
+        <div class="d-flex gap-2">
+            <!-- Search Form -->
+            <form method="get" class="d-flex">
+                <input type="text" name="search" class="form-control me-2" placeholder="Search customers..." value="{{ search_query }}">
+                <button type="submit" class="btn btn-outline-primary">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            {% if customers %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Account Number</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Balance</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for customer in customers %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ customer.account.account_number }}</strong>
+                                    </td>
+                                    <td>{{ customer.username }}</td>
+                                    <td>{{ customer.email }}</td>
+                                    <td>{{ customer.phone|default:"Not provided" }}</td>
+                                    <td>${{ customer.account.balance|default:0|floatformat:2|intcomma }}</td>
+                                    <td>
+                                        <span class="badge {% if customer.account.is_active %}bg-success{% else %}bg-warning{% endif %}">
+                                            {% if customer.account.is_active %}Active{% else %}Pending{% endif %}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#notificationModal{{ customer.id }}">
+                                                <i class="fas fa-bell"></i>
+                                            </button>
+                                            <a href="#" class="btn btn-outline-info">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </div>
+
+                                        <!-- Notification Modal -->
+                                        <div class="modal fade" id="notificationModal{{ customer.id }}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Send Notification</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <form method="post" action="{% url 'send_notification' %}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="customer_id" value="{{ customer.id }}">
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Title</label>
+                                                                <input type="text" name="title" class="form-control" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Message</label>
+                                                                <textarea name="message" class="form-control" rows="3" required></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Send Notification</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No customers found.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

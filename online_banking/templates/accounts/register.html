@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bank-gradient text-white text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-user-plus me-2"></i>Create Your Account</h3>
+                    <p class="mb-0 mt-2">Join SecureBank today</p>
+                </div>
+                <div class="card-body p-5">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="mb-3 text-primary"><i class="fas fa-user me-2"></i>Personal Information</h5>
+                                {{ form.username|as_crispy_field }}
+                                {{ form.email|as_crispy_field }}
+                                {{ form.first_name|as_crispy_field }}
+                                {{ form.last_name|as_crispy_field }}
+                                {{ form.date_of_birth|as_crispy_field }}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h5 class="mb-3 text-primary"><i class="fas fa-address-card me-2"></i>Contact & Role</h5>
+                                {{ form.phone|as_crispy_field }}
+                                {{ form.address|as_crispy_field }}
+                                {{ form.role|as_crispy_field }}
+                                
+                                <h5 class="mb-3 text-primary mt-4"><i class="fas fa-lock me-2"></i>Security</h5>
+                                {{ form.password1|as_crispy_field }}
+                                {{ form.password2|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <!-- Role Information -->
+                        <div class="alert alert-info mt-4">
+                            <h6><i class="fas fa-info-circle me-2"></i>About Roles:</h6>
+                            <ul class="mb-0">
+                                <li><strong>Customer:</strong> Regular banking user - can deposit, withdraw, transfer funds</li>
+                                <li><strong>Bank Officer:</strong> Staff member - can approve accounts, monitor transactions</li>
+                                <li><strong>Branch Manager:</strong> Administrative role - full system access and reports</li>
+                            </ul>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg mt-3">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-0">Already have an account? 
+                            <a href="{% url 'login' %}" class="text-decoration-none">Login here</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

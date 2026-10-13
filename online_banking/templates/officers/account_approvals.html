@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            {% include 'officers/sidebar.html' %}
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-header bg-warning text-white">
+                    <h4 class="mb-0"><i class="fas fa-user-check me-2"></i>Account Approval Requests</h4>
+                </div>
+                <div class="card-body">
+                    {% if pending_accounts %}
+                        <div class="row">
+                            {% for account in pending_accounts %}
+                                <div class="col-md-6 mb-4">
+                                    <div class="card card-hover border-warning">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ account.user.get_full_name }}</h5>
+                                            <p class="card-text">
+                                                <strong>Username:</strong> {{ account.user.username }}<br>
+                                                <strong>Email:</strong> {{ account.user.email }}<br>
+                                                <strong>Phone:</strong> {{ account.user.phone|default:"Not provided" }}<br>
+                                                <strong>Account Type:</strong> {{ account.get_account_type_display }}<br>
+                                                <strong>Requested:</strong> {{ account.created_at|date:"M d, Y" }}
+                                            </p>
+                                            
+                                            <form method="post" class="approval-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="account_id" value="{{ account.id }}">
+                                                
+                                                <div class="mb-3">
+                                                    <label class="form-label">Action:</label>
+                                                    <select name="action" class="form-select" required>
+                                                        <option value="">Select action...</option>
+                                                        <option value="approve">Approve Account</option>
+                                                        <option value="reject">Reject Account</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label class="form-label">Remarks:</label>
+                                                    <textarea name="remarks" class="form-control" rows="2" placeholder="Optional remarks..."></textarea>
+                                                </div>
+                                                
+                                                <div class="d-grid gap-2">
+                                                    <button type="submit" class="btn btn-success">Submit Decision</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+                            <h5 class="text-success">No Pending Approvals</h5>
+                            <p class="text-muted">All account requests have been processed.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

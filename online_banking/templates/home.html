@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bank-gradient text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Welcome to SecureBank</h1>
+                <p class="lead mb-4">Your trusted partner in digital banking. Experience secure, fast, and reliable banking services from anywhere, anytime.</p>
+                <div class="d-flex gap-3">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'register' %}" class="btn btn-light btn-lg">Open Account</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">Login</a>
+                    {% else %}
+                        <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg">Go to Dashboard</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://via.placeholder.com/500x300" alt="Banking" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h2 class="fw-bold">Why Choose SecureBank?</h2>
+                <p class="text-muted">Experience the future of banking with our innovative features</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card card-hover border-0 h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Bank-Grade Security</h5>
+                        <p class="card-text">Your funds and data are protected with enterprise-level security measures.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-hover border-0 h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-bolt fa-3x text-warning mb-3"></i>
+                        <h5 class="card-title">Instant Transactions</h5>
+                        <p class="card-text">Transfer funds instantly with our real-time transaction processing.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-hover border-0 h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-mobile-alt fa-3x text-success mb-3"></i>
+                        <h5 class="card-title">24/7 Access</h5>
+                        <p class="card-text">Manage your accounts anytime, anywhere with our mobile-friendly platform.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Role Selection Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h2 class="fw-bold">Login As</h2>
+                <p class="text-muted">Select your role to access the appropriate dashboard</p>
+            </div>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="card card-hover text-center">
+                    <div class="card-body p-4">
+                        <i class="fas fa-user fa-3x text-primary mb-3"></i>
+                        <h5>Customer</h5>
+                        <p class="text-muted">Access your personal banking dashboard</p>
+                        <a href="{% url 'login' %}" class="btn btn-primary">Customer Login</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-hover text-center">
+                    <div class="card-body p-4">
+                        <i class="fas fa-user-tie fa-3x text-warning mb-3"></i>
+                        <h5>Bank Officer</h5>
+                        <p class="text-muted">Manage customer accounts and transactions</p>
+                        <a href="{% url 'login' %}" class="btn btn-warning">Officer Login</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-hover text-center">
+                    <div class="card-body p-4">
+                        <i class="fas fa-user-cog fa-3x text-success mb-3"></i>
+                        <h5>Branch Manager</h5>
+                        <p class="text-muted">Oversee branch operations and analytics</p>
+                        <a href="{% url 'login' %}" class="btn btn-success">Manager Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

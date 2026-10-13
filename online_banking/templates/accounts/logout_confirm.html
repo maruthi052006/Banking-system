@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bank-gradient text-white text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-sign-out-alt me-2"></i>Confirm Logout</h3>
+                </div>
+                <div class="card-body p-5 text-center">
+                    <!-- Warning Icon -->
+                    <div class="mb-4">
+                        <i class="fas fa-exclamation-triangle fa-5x text-warning"></i>
+                    </div>
+                    
+                    <!-- Confirmation Message -->
+                    <h4 class="text-warning mb-3">Ready to leave?</h4>
+                    <p class="text-muted mb-4">
+                        Are you sure you want to logout from your SecureBank account?
+                    </p>
+
+                    <!-- Current User Info -->
+                    <div class="alert alert-light border">
+                        <div class="d-flex align-items-center">
+                            {% if user.profile_picture %}
+                                <img src="{{ user.profile_picture.url }}" class="rounded-circle me-3" width="50" height="50" alt="Profile">
+                            {% else %}
+                                <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                            {% endif %}
+                            <div class="text-start">
+                                <strong>{{ user.get_full_name }}</strong><br>
+                                <small class="text-muted">{{ user.get_role_display }}</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-3 mt-4">
+                        <form method="post" action="{% url 'logout' %}" class="d-grid">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                <i class="fas fa-sign-out-alt me-2"></i>Yes, Logout
+                            </button>
+                        </form>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="mt-4 pt-3 border-top">
+                        <div class="row g-3 text-center">
+                            <div class="col-4">
+                                <i class="fas fa-clock text-primary mb-1"></i>
+                                <small class="d-block">Last Login</small>
+                                <small class="text-muted">{{ user.last_login|timesince }} ago</small>
+                            </div>
+                            <div class="col-4">
+                                <i class="fas fa-user text-success mb-1"></i>
+                                <small class="d-block">Role</small>
+                                <small class="text-muted">{{ user.get_role_display }}</small>
+                            </div>
+                            <div class="col-4">
+                                <i class="fas fa-calendar text-warning mb-1"></i>
+                                <small class="d-block">Member Since</small>
+                                <small class="text-muted">{{ user.date_joined|date:"M Y" }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
